@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartNutri</title>
+
+    <!--Aquí se declara el inicio del Script-->
+    <script type="text/javascript" src="fundamentos.js"></script>
+    <script type="text/javascript" src="objects.mg.js"></script>
+</head> 
+
+<body>
+    <h1>ANTROPOMETRÍA</h1>
+
+    <form name="imc_form">
+        <h2>Cálculo de Índice de Masa Corporal</h2>
+        <label>Peso</label>
+        <input type="number" id="peso" placeholder="Peso en Kilogramos" onchange="calculo_imc();calculo_pi();calculo_ipr();buscar_cym()"
+            onkeyup="validarDatos();calculo_imc();calculo_pi();calculo_ipr();buscar_cym()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+
+        <label>Kg</label>
+
+        <label>Talla</label>
+        <input type="number" id="talla" step="0.01" placeholder="Talla en Metros"  onchange="calculo_imc();calculo_pi();calculo_ipr()" onkeyup="validarDatos();calculo_imc();calculo_pi();calculo_ipr()" 
+            onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+
+        <label>m</label>
+
+        <label>Edad</label>
+        <input type="number" id="edad" placeholder="Edad en Años" onchange="buscar_cym();validarDatos();riesgo_icc()" onkeyup="buscar_cym();riesgo_icc()" 
+            onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+
+        <br>
+        <br>
+
+        <label>IMC</label>
+        <input type="number" id="imc" placeholder="Resultado" readonly>
+
+        <label>Dx:</label>
+        <label id="imcresultado">--------</label>
+
+        <div id="semaforo_imc">
+        <style>
+        #semaforo_imc {
+                width:20px;
+                height:20px;
+                border-radius:50%;
+                border: solid 3px black;
+                overflow:hidden; /* Evitar que el contenido se visualice fuera del borde*/
+            }
+        </style>
+        </div>
+
+    </form>
+
+    <form name="ipr_form">
+        <h2>Cálculo de Indice Ponderal de Rohrer</h2>
+        <label>I.P</label>
+        <input type="number" id="ipr" placeholder="Resultado" readonly>
+        <label id="iprresultado">Resultado</label>
+    </form>
+
+    <form name="pesoideal_form">
+        <h2>Cálculo de peso ideal</h2>
+
+        <h3>Seleccione un género</h3>
+
+        <select name="género" id="select_gen" onchange="buscar_cym(this); calculo_pi();calculo_icc();riesgo_icc()" onkeyup="calculo_pi();calculo_icc();riesgo_icc()">
+            <option value="Seleccione un género" selected>Seleccione una opción</option>
+            <option value="Hombre">Hombre</option>
+            <option value="Mujer">Mujer</option>
+        </select>
+        <br>
+
+        <h3>Seleccione un la fórmula de peso ideal</h3>
+
+        <select name="fpi" id="idformulapi" onchange="calculo_pi(this)" onkeyup="calculo_pi(this)">
+            <option value="Opciones">Seleccione la fórmula</option>
+            <option value="indicebroca" id="ind_bro">Índice de Broca</option>
+            <option value="indicelorentz" id="ind_lor">Fórmula de Lorentz</option>
+            <option value="indicecorreglorentz" id="ind_cor_lor">Fórmula corregida de Lorentz</option>
+            <option value="indiceharvard" id="ind_harv">General de Harvard</option>
+        </select>
+       
+        <br>
+        <br>
+
+        <label>Peso Ideal</label>
+        <input type="text" id="pideal" placeholder="Resultado" readonly>
+        <label>Kg</label>
+
+        <label>Diferencia al peso actual</label>
+        <input type="text" id="pidif" placeholder="Resultado" readonly>
+        <label>Kg</label>
+    </form>
+
+    <form name="icc_form">
+        <h2>Cálculo de índice cintura - cadera</h2>
+
+        <label>Cintura</label>
+        <input type="number" id="cintura" placeholder="Cintura en Centímetros" onchange="validar_icc(); calculo_icc();riesgo_icc()" onkeyup="calculo_icc();riesgo_icc()"
+            onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+        <label>cm</label>
+
+        <label id="riesgo_cintura">Descripción de riesgo por cintura</label>
+
+        <div id="semaforo_cintura">
+            <style>
+            #semaforo_cintura {
+                    width:20px;
+                    height:20px;
+                    border-radius:50%;
+                    border: solid 3px black;
+                    overflow:hidden; /* Evitar que el contenido se visualice fuera del borde*/
+                }
+            </style>
+        </div>
+
+        <br>
+
+        <label>Cadera</label>
+        <input type="numer" id="cadera" placeholder="Cadera en Centímetros" onchange="validar_icc(); calculo_icc();riesgo_icc()" onkeyup="calculo_icc();riesgo_icc()"
+            onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+        <label>cm</label>
+        <br>
+        <br>
+
+        <label>ICC</label>
+        <input type="number" id="icc" placeholder="Resultado" readonly>
+
+        <label>Dx:</label>
+        <label id="iccresultado">--------</label>
+        <br>
+        <br>
+        <label>Valoración del riesgo de salud por I.C.C. :</label>
+        <label id="iccevaluacion"> ----------- </label>
+
+    </form>
+
+    <form name="mg_form">
+        <h2>Cálculo de Masa Grasa y Masa Libre de Grasa</h2>
+
+        <select name="formulagrasa" id="formula_grasa">
+            <option selected>Selecciona la fórmula de masa grasa</option>
+            <option id="durnin_worms">Formula de Durnin Worsmenley</option>
+            <option id="formula2">Fórmula 2</option>
+            <option id="formula3">Fórmula 3</option>
+        </select>
+        <br>
+        <br>
+        
+        <h3>¿Cuánto pliegues deseas utilizar?</h3>
+        
+        <select name="masagrasa" id="select_pliegues" onchange="buscar_cym(this)">
+            <option name="cantidadpliegues" selected>Seleccione la combinación de pliegues</option>
+            <option value="1">1.- BÍCEPS</option>
+            <option value="2">2.- TRÍCEPS</option>
+            <option value="3">3.- SUBESCAPULAR</option>
+            <option value="4">4.- SUPRAILIACO</option>
+            <option value="5">5.- BÍCEPS+TRÍCEPS</option>
+            <option value="6">6.- BICEPS + SUBESCAPULAR</option>
+            <option value="7">7.- BICEPS + SUPRAILIACO</option>
+            <option value="8">8.- TRICEPS + SUBESCAPULAR</option>
+            <option value="9">9.- TRICEPS + SUPRAILIACO</option>
+            <option value="10">10.- SUBESCAPULAR + SUPRAILIACO</option>
+            <option value="11">11.- BICEPS + TRICEPS + SUBESCAPULAR</option>
+            <option value="12">12.- BICEPS + TRICEPS + SUPRAILIACO</option>
+            <option value="13">13.- BICEPS + SUBESCAPULAR + SUPRAILIACO</option>
+            <option value="14">14.- TRICEP + SUBESCAPULAR + SUPRAILIACO</option>
+            <option value="15">15.- 4 PLIEGUES</option>
+        </select>
+        <br>
+        <br>
+        <lable>Pliegue Bicipital</lable>
+        <input type="number" id="pcbi" placeholder="P.C.Bicipital" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+        <label>mm</label>
+        <br>
+        <lable>Pliegue Tricipital</lable>
+        <input type="number" id="pcti" placeholder="P.C.Tricipital" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+        <label>mm</label>
+        <br>
+        <lable>Pliegue Suprailiaco</lable>
+        <input type="number" id="pcsi" placeholder="P.C.Suprailiaco" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+        <label>mm</label>
+        <br>
+        <lable>Pliegue Subescapular</lable>
+        <input type="number" id="pcse" placeholder="P.C.Subespacular" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+        <label>mm</label>
+        <br>
+        <br>
+        <label>Valor de c =</label>
+        <input type="number" id="ccuadro" readonly>
+        <label>Valor de m =</label>
+        <input type="number" id="mcuadro" readonly>
+    </form>
+    
+</body>
+
+</html>
