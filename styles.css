@@ -5,13 +5,10 @@ body {
 
 .container {
     background-color: white;
-    width: 95%;
     max-width: 1200 px;
-    margin: auto;
+    margin:auto;
     padding: 1px 0;
     border-radius: 20px;
-
-    display: grid;
 
 }
 
@@ -20,7 +17,7 @@ h1 {
     background-color: rgb(167, 6, 6); 
     color: white;
     text-align: center;
-    font-size: 100px;
+    
 }
 
 .form-container{
@@ -42,11 +39,11 @@ h2{
 }
 
 input{
-    font-size: 50px;
+    font-size: 30px;
 }
 
 select{
-    font-size: 50px;
+    font-size: 30%;
 }
 
 
