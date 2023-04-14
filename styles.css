@@ -1,0 +1,67 @@
+body {
+    background-color: rgb(9, 1, 36);
+    
+}
+
+.container {
+    background-color: white;
+    width: 95%;
+    max-width: 1200 px;
+    margin: auto;
+    padding: 1px 0;
+    border-radius: 20px;
+
+    display: grid;
+
+}
+
+h1 {
+    
+    background-color: rgb(167, 6, 6); 
+    color: white;
+    text-align: center;
+    font-size: 100px;
+}
+
+.form-container{
+    
+    height: 100%;
+    border-radius: 10px;
+    min-height: 200px;
+    position: relative;
+    font-size: 50px;
+    text-align: justify;
+
+}
+
+
+h2{
+    text-align: center;
+    background-color: rgb(165, 79, 79); 
+    color: white;
+}
+
+input{
+    font-size: 50px;
+}
+
+select{
+    font-size: 50px;
+}
+
+
+#semaforo_imc {
+    width: 100px;
+    height:100px;
+    border-radius:50%;
+    border: solid 1px black;
+    overflow:hidden; /* Evitar que el contenido se visualice fuera del borde*/
+}
+
+#semaforo_cintura {
+    width: 100px;
+    height:100px;
+    border-radius:50%;
+    border: solid 1px black;
+    overflow:hidden; /* Evitar que el contenido se visualice fuera del borde*/
+}
