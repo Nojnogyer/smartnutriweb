@@ -7,7 +7,8 @@
     <title>SmartNutri</title>
 
     <!--Aquí se declara el inicio del Script-->
-    <script type="text/javascript" src="scripts.js"></script>
+    <script type="text/javascript" src="fundamentos.js"></script>
+    <script type="text/javascript" src="objects.mg.js"></script>
     <link rel="stylesheet" href="styles.css">
 
 </head> 
@@ -15,26 +16,28 @@
 <body>
     
 <div class="container">
+
     <h1>ANTROPOMETRÍA</h1>
 
     <div class="form-container">
         <form name="imc_form" >
             <h2>Cálculo de Índice de Masa Corporal</h2>
             <label>Peso</label>
-            <input type="number" id="peso" placeholder="Peso en Kilogramos" onchange="calculo_imc();calculo_pi();calculo_ipr();buscar_cym()"
-                onkeyup="validarDatos();calculo_imc();calculo_pi();calculo_ipr();buscar_cym()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+            <input type="numer" id="peso"  placeholder="Peso en Kilogramos" onchange="calculo_imc();calculo_pi();calculo_ipr();buscar_cym(),calcularMasaGrasa()"
+                onkeyup="validarDatos();calculo_imc();calculo_pi();calculo_ipr();buscar_cym(),calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
 
             <label>Kg</label>
 
             <label>Talla</label>
-            <input type="number" id="talla" step="0.01" placeholder="Talla en Metros"  onchange="calculo_imc();calculo_pi();calculo_ipr()" onkeyup="validarDatos();calculo_imc();calculo_pi();calculo_ipr()" 
-                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+            <input type="number" id="talla" step="0.01" placeholder="Talla en Metros"  onchange="calculo_imc();calculo_pi();calculo_ipr(),calcularMasaGrasa()" 
+            onkeyup="validarDatos();calculo_imc();calculo_pi();calculo_ipr(),calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
 
             <label>m</label>
 
             <label>Edad</label>
-            <input type="number" id="edad" placeholder="Edad en Años" onchange="buscar_cym();validarDatos();riesgo_icc()" onkeyup="buscar_cym();riesgo_icc()" 
-                onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+            <input type="tel" id="edad" size="3" maxlength="3" placeholder="Edad en Años" onchange="buscar_cym();validarDatos();riesgo_icc(),calcularMasaGrasa()" 
+            onkeyup="buscar_cym();riesgo_icc(),calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+            <label>Años</label>
 
             <br>
             <br>
@@ -45,11 +48,7 @@
             <label>Dx:</label>
             <label id="imcresultado">--------</label>
 
-            <div id="semaforo_imc">
-            <style>
-            
-            </style>
-            </div>
+            <label id="semaforo_imc"> R <label>
         </form>
     </div>
 
@@ -68,7 +67,7 @@
 
             <h3>Seleccione un género</h3>
 
-            <select name="género" id="select_gen" onchange="buscar_cym(this); calculo_pi();calculo_icc();riesgo_icc()" onkeyup="calculo_pi();calculo_icc();riesgo_icc()">
+            <select name="género" id="select_gen" onchange="buscar_cym(this); calculo_pi();calculo_icc();riesgo_icc(),seleccionFormulaMG(),calcularMasaGrasa()" onkeyup="calculo_pi();calculo_icc();riesgo_icc(),seleccionFormulaMG(),calcularMasaGrasa()">
                 <option value="Seleccione un género" selected>Seleccione una opción</option>
                 <option value="Hombre">Hombre</option>
                 <option value="Mujer">Mujer</option>
@@ -78,7 +77,7 @@
             <h3>Seleccione un la fórmula de peso ideal</h3>
 
             <select name="fpi" id="idformulapi" onchange="calculo_pi(this)" onkeyup="calculo_pi(this)">
-                <option value="Opciones">Seleccione la fórmula</option>
+                <option value="Opciones" selected>Seleccione la fórmula</option>
                 <option value="indicebroca" id="ind_bro">Índice de Broca</option>
                 <option value="indicelorentz" id="ind_lor">Fórmula de Lorentz</option>
                 <option value="indicecorreglorentz" id="ind_cor_lor">Fórmula corregida de Lorentz</option>
@@ -102,112 +101,482 @@
         <form name="icc_form">
             <h2>Cálculo de índice cintura - cadera</h2>
 
-            <label>Cintura</label>
-            <input type="number" id="cintura" placeholder="Cintura en Centímetros" onchange="validar_icc(); calculo_icc();riesgo_icc()" onkeyup="calculo_icc();riesgo_icc()"
-                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
-            <label>cm</label>
+            <ul>
+                <li>
+                    <label>Cintura</label>
+                    <input type="number" id="cintura" placeholder="Cintura en Centímetros" onchange="validar_icc(); calculo_icc();riesgo_icc(),calcularMasaGrasa()" onkeyup="calculo_icc();riesgo_icc(),calcularMasaGrasa()"
+                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+                    <label>cm</label>
+                    <div id="semaforo_cintura">
+                    </div>
 
-            <label id="riesgo_cintura">Descripción de riesgo por cintura</label>
+                    <label id="riesgo_cintura">Descripción de riesgo por cintura</label>
+                </li>
 
-            <div id="semaforo_cintura">
-                <style>
+                <li>
+                    <label>Cadera</label>
+                    <input type="numer" id="cadera" placeholder="Cadera en Centímetros" onchange="validar_icc(); calculo_icc();riesgo_icc()" onkeyup="calculo_icc();riesgo_icc()"
+                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
+                    <label>cm</label>
+                </li>
                 
-                </style>
-            </div>
+                <li>
+                    <label>ICC</label>
+                    <input type="number" id="icc" placeholder="Resultado" readonly>
 
-            <br>
-
-            <label>Cadera</label>
-            <input type="numer" id="cadera" placeholder="Cadera en Centímetros" onchange="validar_icc(); calculo_icc();riesgo_icc()" onkeyup="calculo_icc();riesgo_icc()"
-                onkeypress="return (event.charCode >= 48 && event.charCode <= 57 || event.charCode == 46)">
-            <label>cm</label>
-            <br>
-            <br>
-
-            <label>ICC</label>
-            <input type="number" id="icc" placeholder="Resultado" readonly>
-
-            <label>Dx:</label>
-            <label id="iccresultado">--------</label>
-            <br>
-            <br>
-            <label>Valoración del riesgo de salud por I.C.C. :</label>
-            <label id="iccevaluacion"> ----------- </label>
-
+                    <label>Dx:</label>
+                    <label id="iccresultado">--------</label>
+                </li>
+                
+                <label>Valoración del riesgo de salud por I.C.C. :</label>
+                <label id="iccevaluacion"> ----------- </label>
+            </ul>
         </form>
     </div>
 
     <div class="form-container">
         <form name="mg_form">
             <h2>Cálculo de Masa Grasa y Masa Libre de Grasa</h2>
-
-            <select name="formulagrasa" id="formula_grasa">
-                <option selected>Selecciona la fórmula de masa grasa</option>
-                <option id="durnin_worms">Formula de Durnin Worsmenley</option>
-                <option id="formula2">Fórmula 2</option>
-                <option id="formula3">Fórmula 3</option>
-            </select>
-            <br>
-            <br>
             
-            <h3>¿Cuánto pliegues deseas utilizar?</h3>
-            
-            <select name="masagrasa" id="select_pliegues" onchange="buscar_cym(this)">
-                <option name="cantidadpliegues" selected>Seleccione la combinación de pliegues</option>
-                <option value="1">1.- BÍCEPS</option>
-                <option value="2">2.- TRÍCEPS</option>
-                <option value="3">3.- SUBESCAPULAR</option>
-                <option value="4">4.- SUPRAILIACO</option>
-                <option value="5">5.- BÍCEPS+TRÍCEPS</option>
-                <option value="6">6.- BICEPS + SUBESCAPULAR</option>
-                <option value="7">7.- BICEPS + SUPRAILIACO</option>
-                <option value="8">8.- TRICEPS + SUBESCAPULAR</option>
-                <option value="9">9.- TRICEPS + SUPRAILIACO</option>
-                <option value="10">10.- SUBESCAPULAR + SUPRAILIACO</option>
-                <option value="11">11.- BICEPS + TRICEPS + SUBESCAPULAR</option>
-                <option value="12">12.- BICEPS + TRICEPS + SUPRAILIACO</option>
-                <option value="13">13.- BICEPS + SUBESCAPULAR + SUPRAILIACO</option>
-                <option value="14">14.- TRICEP + SUBESCAPULAR + SUPRAILIACO</option>
-                <option value="15">15.- 4 PLIEGUES</option>
+            <select name="formulagrasa" id="formula_grasa" onchange="buscar_cym(),seleccionFormulaMG(this)">
+                <option value="none" selected>Selecciona la fórmula de masa grasa</option>
+                <option value="durnin" id="durnin">Formula de Durnin Worsmenley</option>
+                <option value="densitometria" id="densitometria">Fórmula de estimación por Densitometría</option>
+                <option value="bioimpedancia" id="bioimpedancia">Fórmula de estimación por Bioimpedancia</option>
+                <option value="siri" id="siri">Fórmula de Siri (6 puntos)</option>
+                <option value="brozek" id="brozek">Fórmula de Brozek</option>
             </select>
-            <br>
-            <br>
-            <lable>Pliegue Bicipital</lable>
-            <input type="number" id="pcbi" placeholder="P.C.Bicipital" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
-            <label>mm</label>
-            <br>
-            <lable>Pliegue Tricipital</lable>
-            <input type="number" id="pcti" placeholder="P.C.Tricipital" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
-            <label>mm</label>
-            <br>
-            <lable>Pliegue Suprailiaco</lable>
-            <input type="number" id="pcsi" placeholder="P.C.Suprailiaco" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
-            <label>mm</label>
-            <br>
-            <lable>Pliegue Subescapular</lable>
-            <input type="number" id="pcse" placeholder="P.C.Subespacular" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
-            <label>mm</label>
-            <br>
-            <br>
-            <label>Valor de c =</label>
-            <input type="number" id="ccuadro" readonly>
-            <label>Valor de m =</label>
-            <input type="number" id="mcuadro" readonly>
-            <br>
-            <br>
+        
+            <div class="mg-element-container" id="mg_durninwomersley_elements">
+                <h2>Ecuación de Durnin - Womersley</h2>
+                <h3>¿Cuánto pliegues deseas utilizar?</h3>
+                
+                <ul>
+                    <li>
+                        <select name="masagrasa" id="select_pliegues" onchange="buscar_cym(this), seleccionPligues(this), calcularMasaGrasa(this)">
+                            <option value="none" name="cantidadpliegues" selected>Seleccione la combinación de pliegues</option>
+                            <option value="1">1.- BÍCEPS</option>
+                            <option value="2">2.- TRÍCEPS</option>
+                            <option value="3">3.- SUBESCAPULAR</option>
+                            <option value="4">4.- SUPRAILIACO</option>
+                            <option value="5">5.- BÍCEPS+TRÍCEPS</option>
+                            <option value="6">6.- BICEPS + SUBESCAPULAR</option>
+                            <option value="7">7.- BICEPS + SUPRAILIACO</option>
+                            <option value="8">8.- TRICEPS + SUBESCAPULAR</option>
+                            <option value="9">9.- TRICEPS + SUPRAILIACO</option>
+                            <option value="10">10.- SUBESCAPULAR + SUPRAILIACO</option>
+                            <option value="11">11.- BICEPS + TRICEPS + SUBESCAPULAR</option>
+                            <option value="12">12.- BICEPS + TRICEPS + SUPRAILIACO</option>
+                            <option value="13">13.- BICEPS + SUBESCAPULAR + SUPRAILIACO</option>
+                            <option value="14">14.- TRICEP + SUBESCAPULAR + SUPRAILIACO</option>
+                            <option value="15">15.- 4 PLIEGUES</option>
+                        </select>
+                    </li>
 
-            <label>Porcentaje de Masa Grasa</label>
-            <input type="number" id="%mg" placeholder="% de Masa Grasa"readonly>
+                        <h3>Ingresa los datos necesarios</h3>
+                        <label>Los datos requeridos son: Pliegue Bicipital, Tricipital, Suprailiaco y Subescapular, además se requieren los valores de "c" y "m", pero estos datos se calculan de manera automática por Edad y Sexo</label>
+                    
+                    
+                    <div class="pliegues-container" id="divpb">
+                        <label>Pliegue Bicipital</label>
+                        <input type="tel" id="pcbi1" size="2" maxlength="2" placeholder="P.C.Bicipital" onchange="buscar_cym(),calcularMasaGrasa()" onkeyup="buscar_cym(),calcularMasaGrasa()"
+                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </div>
+                    
+                    <div class="pliegues-container" id="divpt">
+                        <label>Pliegue Tricipital</label>
+                        <input type="tel" id="pcti1" size="2" maxlength="2" placeholder="P.C.Tricipital" onchange="buscar_cym(),calcularMasaGrasa()" onkeyup="buscar_cym(),calcularMasaGrasa()"
+                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </div>
+                    
+                    <div class="pliegues-container" id="divpsi">
+                        <lable>Pliegue Suprailiaco</lable>
+                        <input type="tel" id="pcsi1" size="2" maxlength="2" placeholder="P.C.Suprailiaco" onchange="buscar_cym(),calcularMasaGrasa()" onkeyup="buscar_cym(),calcularMasaGrasa()"
+                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </div>
+                    
+                    <div class="pliegues-container" id="divpse">
+                        <lable>Pliegue Subescapular</lable>
+                        <input type="tel" id="pcse1" size="2" maxlength="2" placeholder="P.C.Subespacular" onchange="buscar_cym(),calcularMasaGrasa()" onkeyup="buscar_cym(),calcularMasaGrasa()"
+                        onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </div>
+                <ul>
+                    <li>
+                        <label>Valor de c =</label>
+                        <input type="number" id="ccuadro" readonly onchange="calcularMasaGrasa()">
+                        <label>Valor de m =</label>
+                        <input type="number" id="mcuadro" readonly onchange="calcularMasaGrasa()">
+                    </li>
+                </ul>
 
-            <label>Kg de Masa Grasa</label>
-            <input type="number" id="kgmg" placeholder="Kg de Masa Grasa"readonly>
+                <ul>
+                    <li>
+                        <label>Porcentaje de Masa Grasa</label>
+                        <input type="number" id="porcmg" placeholder="% de Masa Grasa"readonly>
+                        <label>%</label>
+                    </li>
 
-            <label>& de Masa Libre de Grasa</label>
-            <input type="number" id="%mlg" placeholder="% de Masa Libre de Grasa"readonly>
+                    <li>
+                        <label>Porción del peso de Masa Grasa</label>
+                        <input type="number" id="kgmg" placeholder="Kg de Masa Grasa"readonly>
+                        <label>kg</label>
+                    </li>
 
-            <label>Kg de Masa Libre Grasa</label>
-            <input type="number" id="kgmlg" placeholder="Kg de Masa Grasa"readonly>
+                    <li>
+                        <label>Porcentaje de Masa Libre de Grasa</label>
+                        <input type="number" id="porcmlg" placeholder="% de Masa Libre de Grasa"readonly>
+                        <label>%</label>
+                    </li>
+
+                    <li>
+                        <label>Porción del peso de Masa Libre Grasa</label>
+                        <input type="number" id="kgmlg" placeholder="Kg de Masa Grasa"readonly>
+                        <label>kg</label>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mg-element-container" id="mg_densitometria_elements_h">
+                <h2>Ecuación Estimada por Densitometría</h2>
+                <h3>Ingresa los datos necesarios</h3>
+                <label>Los datos requeridos para Hombre son: Circunferencia de cintura, Pliegue abdominal, Pliegue de muslo frontal, Pliegue subescapular y Estatura.</label>
+                <label style="color: red"> Los datos como Cintura, Sexo y Estatura se tomarán de los datos ingresados anteriormente</label>
+
+                <ul>
+                    <li>
+                        <label>Pliegue Abdominal</label>
+                        <input type="tel" id="pcabdensh" size="2" maxlength="2" placeholder="Pliegue Abdominal" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+                    
+                    <li>
+                        <label>Pliegue de Muslo Frontal</label>
+                        <input type="tel" id="pcmusldensh" size="2" maxlength="2" placeholder="Pliegue de Muslo Frontal" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+
+                    <li>
+                        <label>Pliegue Subescapular</label>
+                        <input type="tel" id="pcsedensh" size="2" maxlength="2" placeholder="Pliegue Abdominal" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+                </ul>
+
+                <ul>
+                    <li>
+                        <label>Porcentaje de Masa Grasa</label>
+                        <input type="number" id="porcmg4" placeholder="% de Masa Grasa"readonly>
+                        <label>%</label>
+                    </li>
+
+                    <li>
+                        <label>Porción del peso de Masa Grasa</label>
+                        <input type="number" id="kgmg4" placeholder="Kg de Masa Grasa"readonly>
+                        <label>kg</label>
+                    </li>
+
+                    <li>
+                        <label>Porcentaje de Masa Libre de Grasa</label>
+                        <input type="number" id="porcmlg4" placeholder="% de Masa Libre de Grasa"readonly>
+                        <label>%</label>
+                    </li>
+
+                    <li>
+                        <label>Porción del peso de Masa Libre Grasa</label>
+                        <input type="number" id="kgmlg4" placeholder="Kg de Masa Grasa"readonly>
+                        <label>kg</label>
+                    </li>
+                </ul>
+                
+            </div>
+
+            <div class="mg-element-container" id="mg_densitometria_elements_m">
+                <h2>Ecuación Estimada por Densitometría</h2>
+                <h3>Ingresa los datos necesarios</h3>
+                <label>Los datos requeridos para Mujer son: Circunferencia de Cintura, Pliegue Supraespinal, Pliegue de Muslo Frontal, Pliegue Medio Axilar y Pliegue Bicipital</label>
+                <label style="color: red"> Los datos como Cintura, Sexo y Estatura se tomarán de los datos ingresados anteriormente</label>
+
+                <ul>
+                    <li>
+                        <label>Pliegue Supraespinal</label>
+                        <input type="tel" id="pcsupradensm" size="2" maxlength="2" placeholder="Pliegue Supraespinal" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+                    
+                    <li>
+                        <label>Pliegue de Muslo Frontal</label>
+                        <input type="tel" id="pcmusdensm" size="2" maxlength="2" placeholder="Pliegue de muslo frontal" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+
+                    <li>
+                        <label>Pliegue Medio Axilar</label>
+                        <input type="tel" id="pcmedaxdesnm" size="2" maxlength="2" placeholder="Pliegue Medio Axilar" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+
+                    <li>
+                        <label>Pliegue Bicipital</label>
+                        <input type="tel" id="pcbidensm" size="2" maxlength="2" placeholder="Pliegue Bicipital" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+                </ul>
+
+                <ul>
+                    <li>
+                        <label>Porcentaje de Masa Grasa</label>
+                        <input type="number" id="porcmg5" placeholder="% de Masa Grasa"readonly>
+                        <label>%</label>
+                    </li>
+
+                    <li>
+                        <label>Porción del peso de Masa Grasa</label>
+                        <input type="number" id="kgmg5" placeholder="Kg de Masa Grasa"readonly>
+                        <label>kg</label>
+                    </li>
+
+                    <li>
+                        <label>Porcentaje de Masa Libre de Grasa</label>
+                        <input type="number" id="porcmlg5" placeholder="% de Masa Libre de Grasa"readonly>
+                        <label>%</label>
+                    </li>
+
+                    <li>
+                        <label>Porción del peso de Masa Libre Grasa</label>
+                        <input type="number" id="kgmlg5" placeholder="Kg de Masa Grasa"readonly>
+                        <label>kg</label>
+                    </li>
+                </ul>
+                
+            </div>
+
+            <div class="mg-element-container" id="mg_bioimpedancia_elements_h">
+                <h2>Ecuación Estimada por Bioimpedancia</h2>
+                <h3>Ingresa los datos necesarios</h3>
+                <label>Los datos requeridos para Hombre son: Circunferencia de cintura, Pliegue de Bíceps, Pliegue Abdominal, Pliegue Subescapular y Estatura</label>
+                <label style="color: red"> Los datos como Cintura y Sexo se tomarán de los datos ingresados anteriormente</label>
+
+                <ul>
+                    <li>
+                        <label>Pliegue Abdominal</label>
+                        <input type="tel" id="pcabd4" size="2" maxlength="2" placeholder="Pliegue Abdominal" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+                    
+                    <li>
+                        <label>Pliegue de Muslo Frontal</label>
+                        <input type="tel" id="pcmusl4" size="2" maxlength="2" placeholder="Pliegue de Muslo Frontal" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+
+                    <li>
+                        <label>Pliegue Subescapular</label>
+                        <input type="tel" id="pcse4" size="2" maxlength="2" placeholder="Pliegue Abdominal" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mg-element-container" id="mg_bioimpedancia_elements_m">
+                <h2>Ecuación Estimada por Bioimpedancia</h2>
+                <h3>Ingresa los datos necesarios</h3>
+                <label>Los datos requeridos para Mujer son: Circunferencia de cintura, Pliegue Supraespinal, Pliehue de Muslo Frontal, Pliegue Medio Axilar e I.M.C.</label>
+                <label style="color: red"> Los datos como Cintura y Sexo se tomarán de los datos ingresados anteriormente</label>
+
+                <ul>
+                    <li>
+                        <label>Pliegue Supraespinal</label>
+                        <input type="tel" id="pcsupraes5" size="2" maxlength="2" placeholder="Pliegue Abdominal" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+                    
+                    <li>
+                        <label>Pliegue de muslo frontal</label>
+                        <input type="tel" id="pcmusl5" size="2" maxlength="2" placeholder="Pliegue de Muslo Frontal" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+
+                    <li>
+                        <label>Pliegue Medio Axilar</label>
+                        <input type="tel" id="pcmedax5" size="2" maxlength="2" placeholder="Pliegue Abdominal" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                        <label>mm</label>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="mg-element-container" id="mg_siri_elements">
+                <h2>Ecuación de Siri</h2>
+
+                <h3>Ingresa los datos necesarios</h3>
+                <label>Los datos requeridos son: Pliegue Tricipital, Suprailiaco, Subescapular, Abdominal, de Muslo y Gemelar y Subescapular, además se requiere el valor de  Edad, pero este se tomará de los datos ingresados anteriormente. </label>
+                <label style="font-weight: 700;">La fórmula de Siri también se puede calcular con 1, 2, 3 o 4 puntos, pero al ser la misma fórmula de Durnin, se establece esta fórmula de 6 puntos como exclusiva.</label>
+                    <ul>
+                        <li>
+                            <lable>Pliegue Tricipital</lable>
+                            <input type="tel" id="ptsiri" size="2" maxlength="2" placeholder="P.C.Bicipital" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                            <label>mm</label>
+                        </li>
+                        
+                        <li>
+                            <lable>Pliegue Subescapular</lable>
+                            <input type="tel" id="psesiri" size="2" maxlength="2" placeholder="P.C.Tricipital" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                            <label>mm</label>
+                        </li>
+                        
+                        <li>
+                            <lable>Pliegue Suprailiaco</lable>
+                            <input type="tel" id="psisiri" size="2" maxlength="2" placeholder="P.C.Suprailiaco" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                            <label>mm</label>
+                        </li>
+                        
+                        <li>
+                            <lable>Pliegue Muslo</lable>
+                            <input type="tel" size="2" maxlength="2" id="pmsiri" placeholder="P.C.Muslo" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                            <label>mm</label>
+                        </li>
+
+                        <li>
+                            <lable>Pliegue Abdominal</lable>
+                            <input type="tel" id="pasiri"  size="2" maxlength="2" placeholder="P.C.Abdominal" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                            <label>mm</label>
+                        </li>
+
+                        <li>
+                            <lable>Pliegue Gemelar</lable>
+                            <input type="tel" id="pgsiri" size="2" maxlength="2" placeholder="P.C.Gemelar" onchange="calcularMasaGrasa()" onkeyup="calcularMasaGrasa()" onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                            <label>mm</label>
+                        </li>
+
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <label>Porcentaje de Masa Grasa</label>
+                            <input type="number" id="porcmg2" placeholder="% de Masa Grasa"readonly>
+                            <label>%</label>
+                        </li>
+    
+                        <li>
+                            <label>Porción del peso de Masa Grasa</label>
+                            <input type="number" id="kgmg2" placeholder="Kg de Masa Grasa"readonly>
+                            <label>kg</label>
+                        </li>
+    
+                        <li>
+                            <label>Porcentaje de Masa Libre de Grasa</label>
+                            <input type="number" id="porcmlg2" placeholder="% de Masa Libre de Grasa"readonly>
+                            <label>%</label>
+                        </li>
+    
+                        <li>
+                            <label>Porción del peso de Masa Libre Grasa</label>
+                            <input type="number" id="kgmlg2" placeholder="Kg de Masa Grasa"readonly>
+                            <label>kg</label>
+                        </li>
+                    </ul>
+
+            </div>
+
+            <div class="mg-element-container" id="mg_brozek_elements">
+                <h2>Ecuación de Brozeck</h2>
+                <h3>¿Cuánto pliegues deseas utilizar?</h3>
+                    
+                    <ul>
+                        <li>
+                            <select name="masagrasa" id="select_pliegues3" onchange="buscar_cym(this),seleccionPligues(this), calcularMasaGrasa(this)">
+                                <option value="none" selected>Seleccione la combinación de pliegues</option>
+                                <option value="1">1.- BÍCEPS</option>
+                                <option value="2">2.- TRÍCEPS</option>
+                                <option value="3">3.- SUBESCAPULAR</option>
+                                <option value="4">4.- SUPRAILIACO</option>
+                                <option value="5">5.- BÍCEPS+TRÍCEPS</option>
+                                <option value="6">6.- BICEPS + SUBESCAPULAR</option>
+                                <option value="7">7.- BICEPS + SUPRAILIACO</option>
+                                <option value="8">8.- TRICEPS + SUBESCAPULAR</option>
+                                <option value="9">9.- TRICEPS + SUPRAILIACO</option>
+                                <option value="10">10.- SUBESCAPULAR + SUPRAILIACO</option>
+                                <option value="11">11.- BICEPS + TRICEPS + SUBESCAPULAR</option>
+                                <option value="12">12.- BICEPS + TRICEPS + SUPRAILIACO</option>
+                                <option value="13">13.- BICEPS + SUBESCAPULAR + SUPRAILIACO</option>
+                                <option value="14">14.- TRICEP + SUBESCAPULAR + SUPRAILIACO</option>
+                                <option value="15">15.- 4 PLIEGUES</option>
+                            </select>
+                        </li>
+
+                <h3>Ingresa los datos necesarios</h3>
+                <label>Los datos requeridos son: Pliegue Bicipital, Tricipital, Suprailiaco y Subescapular, además se requieren los valores de "c" y "m", pero estos datos se calculan de manera automática por Edad y Sexo</label>
+                
+                    <div class="pliegues-container" id="divpb3">
+                            <label>Pliegue Bicipital</label>
+                            <input type="tel" id="pbbrozek" size="2" maxlength="2" placeholder="P.C.Bicipital" onchange="buscar_cym(),calcularMasaGrasa()" onkeyup="buscar_cym(),calcularMasaGrasa()"
+                            onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                            <label>mm</label>
+                    </div>
+                        
+                    <div class="pliegues-container" id="divpt3">
+                            <lable>Pliegue Tricipital</lable>
+                            <input type="tel" id="ptbrozek" size="2" maxlength="2" placeholder="P.C.Tricipital" onchange="buscar_cym(),calcularMasaGrasa()" onkeyup="buscar_cym(),calcularMasaGrasa()"
+                            onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                            <label>mm</label>
+                    </div>
+                        
+                    <div class="pliegues-container" id="divpsi3">
+                            <lable>Pliegue Suprailiaco</lable>
+                            <input type="tel" id="psibrozek" size="2" maxlength="2" placeholder="P.C.Suprailiaco" onchange="buscar_cym(),calcularMasaGrasa()" onkeyup="buscar_cym(),calcularMasaGrasa()"
+                            onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                            <label>mm</label>
+                    </div>
+                        
+                    <div class="pliegues-container" id="divpse3">
+                            <lable>Pliegue Subescapular</lable>
+                            <input type="tel" id="psebrozek" size="2" maxlength="2" placeholder="P.C.Subespacular" onchange="buscar_cym(),calcularMasaGrasa()" onkeyup="buscar_cym(),calcularMasaGrasa()"
+                            onkeypress="return (event.charCode >= 48 && event.charCode <= 57)">
+                            <label>mm</label>
+                    </div>
+                    
+                        <li>
+                            <label>Valor de c =</label>
+                            <input type="number" id="ccuadro3" readonly>
+                            <label>Valor de m =</label>
+                            <input type="number" id="mcuadro3" readonly>
+                        </li>
+
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <label>Porcentaje de Masa Grasa</label>
+                            <input type="number" id="porcmg3" placeholder="% de Masa Grasa"readonly>
+                            <label>%</label>
+                        </li>
+    
+                        <li>
+                            <label>Porción del peso de Masa Grasa</label>
+                            <input type="number" id="kgmg3" placeholder="Kg de Masa Grasa"readonly>
+                            <label>kg</label>
+                        </li>
+    
+                        <li>
+                            <label>Porcentaje de Masa Libre de Grasa</label>
+                            <input type="number" id="porcmlg3" placeholder="% de Masa Libre de Grasa"readonly>
+                            <label>%</label>
+                        </li>
+    
+                        <li>
+                            <label>Porción del peso de Masa Libre Grasa</label>
+                            <input type="number" id="kgmlg3" placeholder="Kg de Masa Grasa"readonly>
+                            <label>kg</label>
+                        </li>
+                    </ul>
+
+                </div>
+
         </form>
+        
     </div>
 </div>
 
